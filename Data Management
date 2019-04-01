@@ -141,3 +141,20 @@ train_all_4$AMT_ANNUITY[train_all_4$AMT_ANNUITY>472500]<- quantile(train_all_4$A
 
 #Check a couple of numeric variable in $ amount, it seems like 99% is a reasonable cap treatment
 #Keep exploring others and discuss
+
+#create histograms for all variables
+library(Hmisc)
+pdf("histograms_Train.pdf")
+hist.data.frame(train_all)
+dev.off()
+
+## create boxplots for all variables
+## reshaping the data 
+library(reshape2)
+dat.m <- melt(train_all,id.vars='TARGET')
+test <- dat.m[dat.m$variable == SK_ID_CURR]
+library(lattice)
+bwplot(value~TARGET |variable,    ## see the powerful conditional formula 
+       data=dat.m,
+       between=list(y=1),
+       main="Will Repay(0) or Will Have Trouble Repaying(1)")
